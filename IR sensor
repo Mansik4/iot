@@ -1,0 +1,23 @@
+#define irSensor 2  
+#define buzzer 8    
+
+void setup() {
+  pinMode(irSensor, INPUT); 
+  pinMode(buzzer, OUTPUT);  
+  Serial.begin(9600);
+}
+
+void loop() {
+  int sensorValue = digitalRead(irSensor);
+
+  if (sensorValue == LOW) {
+    Serial.println("Intruder Detected!");
+    digitalWrite(buzzer, HIGH); 
+  } 
+  else {
+    Serial.println("Area Clear");
+    digitalWrite(buzzer, LOW); 
+  }
+
+  delay(200);
+}

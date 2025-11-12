@@ -1,0 +1,38 @@
+#define BLYNK_TEMPLATE_ID "Your_Template_ID"
+#define BLYNK_DEVICE_NAME "Ultrasonic"
+#define BLYNK_AUTH_TOKEN "Your_Blynk_Auth_Token"
+#include <ESP8266WiFi.h>
+#include <BlynkSimpleEsp8266.h>
+
+char ssid[] = "YourWiFiName";
+char pass[] = "YourWiFiPassword";
+#define trig D5
+#define echo D6
+
+long duration;
+int distance;
+
+void setup()
+{
+  Serial.begin(9600);
+  pinMode(trig, OUTPUT);
+  pinMode(echo, INPUT);
+
+  Blynk.begin(BLYNK_AUTH_TOKEN, ssid, pass);
+}
+
+void loop()
+{
+  digitalWrite(trig, LOW);
+  delayMicroseconds(2);
+  digitalWrite(trig, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trig, LOW);
+
+  duration = pulseIn(echo, HIGH);
+  distance = duration * 0.034 / 2;
+
+  Serial.print("Distance: ");
+  Serial.println(distance);
+  Blynk.virtualWrite(V0, distance); // Send to Blynk label or gauge widget
+  Blynk.run();    }
